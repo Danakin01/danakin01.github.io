@@ -157,3 +157,12 @@ function submitForm() {
       button.innerHTML = originalText;
     });
 }
+
+function resetForm() {
+  const form = document.getElementById('contact-form');
+  const successDiv = document.getElementById('form-success');
+  form.reset();
+  form.style.display = 'block';
+  successDiv.style.display = 'none';
+}
+
