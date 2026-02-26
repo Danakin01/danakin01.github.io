@@ -133,39 +133,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// --Submit Form--// Uses FormSubmit.co for handling form submissions without backend code. Remember to change the email in the fetch URL to your own Gmail address and set up FormSubmit.co accordingly.
+// --Submit Form--//
 function submitForm() {
   const form = document.getElementById('contact-form');
+  const successDiv = document.getElementById('form-success');
   const button = form.querySelector('.submit-btn');
   const originalText = button.innerHTML;
 
-  // Disable button while sending
   button.disabled = true;
   button.innerHTML = 'Sending... ↗';
 
-  const formData = new FormData(form);
-
-  fetch('https://formsubmit.co/ajax/danielakinwande00@gmail.com', {   
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success === true) {
-      // Show your beautiful success message
+  emailjs.sendForm('myportfolio', 'template_cpwytsw', form)
+    .then(() => {
       form.style.display = 'none';
-      document.getElementById('form-success').style.display = 'block';
-    } else {
-      alert('Something went wrong. Please try again.');
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('Connection issue. Please check your internet and try again.');
-  })
-  .finally(() => {
-    // Re-enable button
-    button.disabled = false;
-    button.innerHTML = originalText;
-  });
+      successDiv.style.display = 'block';
+    })
+    .catch((error) => {
+      console.error('Email error:', error);
+      alert('Failed to send. Please try again.');
+    })
+    .finally(() => {
+      button.disabled = false;
+      button.innerHTML = originalText;
+    });
 }
