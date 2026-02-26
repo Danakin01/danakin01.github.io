@@ -137,8 +137,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function submitForm() {
   const form = document.getElementById('contact-form');
   const successDiv = document.getElementById('form-success');
-  const button = form.querySelector('.submit-btn');
+  const button = form.querySelector('.submit-btn');  // or document.querySelector('.submit-btn')
   const originalText = button.innerHTML;
+
+  if (!form || !successDiv) {
+    alert("Form or success div not found – check your HTML IDs.");
+    return;
+  }
 
   button.disabled = true;
   button.innerHTML = 'Sending... ↗';
@@ -147,22 +152,15 @@ function submitForm() {
     .then(() => {
       form.style.display = 'none';
       successDiv.style.display = 'block';
+      console.log('SUCCESS! Email sent.');
     })
     .catch((error) => {
-      console.error('Email error:', error);
-      alert('Failed to send. Please try again.');
+      console.error('EmailJS failed:', error);
+      alert('Failed to send: ' + (error.text || 'Check console for details'));
     })
     .finally(() => {
       button.disabled = false;
       button.innerHTML = originalText;
     });
-}
-
-function resetForm() {
-  const form = document.getElementById('contact-form');
-  const successDiv = document.getElementById('form-success');
-  form.reset();
-  form.style.display = 'block';
-  successDiv.style.display = 'none';
 }
 
