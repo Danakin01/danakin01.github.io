@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experience - Daniel Akinwande George</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .page-hero {
+      padding: 7rem 5% 5rem;
+      background: radial-gradient(ellipse at 80% 20%, rgba(0,229,255,0.04) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 3rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--cyan), transparent);
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 3.5rem;
+    }
+    .tl-dot {
+      position: absolute;
+      left: -3.4rem;
+      top: 0.35rem;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--cyan);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .tl-item:hover .tl-dot {
+      background: var(--cyan);
+      box-shadow: 0 0 16px rgba(0,255,170,0.5);
+    }
+    .tl-date {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+    .tl-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 1.75rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .tl-item:hover .tl-card {
+      border-color: var(--border2);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    }
+    .tl-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .tl-role {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .tl-company {
+      font-size: 0.9rem;
+      color: var(--cyan);
+      margin-bottom: 0.75rem;
+    }
+    .tl-type {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      letter-spacing: 0.1em;
+    }
+    .tl-desc {
+      font-size: 0.875rem;
+      color: var(--text2);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .tl-achievements {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .tl-achievements li {
+      font-size: 0.83rem;
+      color: var(--text2);
+      padding-left: 1.25rem;
+      position: relative;
+    }
+    .tl-achievements li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .tl-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+
+    /* Skills Section */
+    .skills-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .skill-group-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .skill-bar {
+      margin-bottom: 1.25rem;
+    }
+    .skill-bar-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+    .skill-name { font-size: 0.85rem; color: var(--text); }
+    .skill-pct { font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan); }
+    .skill-track {
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .skill-fill {
+      height: 100%;
+      background: var(--gradient);
+      border-radius: 999px;
+      width: 0;
+      transition: width 1.2s var(--ease);
+    }
+
+    /* Open Source */
+    .os-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+    .os-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .os-card:hover { border-color: var(--border2); transform: translateY(-4px); }
+    .os-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+    .os-name { font-weight: 700; color: var(--cyan); font-size: 0.95rem; }
+    .os-stars { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text3); }
+    .os-desc { font-size: 0.83rem; color: var(--text2); line-height: 1.7; margin-bottom: 1rem; }
+    .os-lang {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text3);
+    }
+    .lang-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); }
+
+    @media (max-width: 768px) {
+      .skills-layout { grid-template-columns: 1fr; }
+      .timeline { padding-left: 1.5rem; }
+      .tl-dot { left: -1.9rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="cursor"></div>
+<div class="cursor-ring"></div>
+<div class="page-transition"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">dan<span>.py</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="research.html">Research</a></li>
+    <li><a href="education.html">Education</a></li>
+    <li><a href="experience.html" class="active">Experience</a></li>
+    <li><a href="contact.html" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav">
+  <a href="index.html">Home</a><a href="projects.html">Projects</a><a href="research.html">Research</a>
+  <a href="education.html">Education</a><a href="experience.html">Experience</a><a href="contact.html">Contact</a>
+</div>
+
+<div class="page-wrapper">
+  <div class="page-hero">
+    <p class="section-tag reveal">Career</p>
+    <h1 class="reveal" data-delay="100" style="font-family:var(--font-serif);font-size:clamp(3rem,7vw,6rem);font-weight:400;color:var(--white);">Experience &<br><em style="color:var(--cyan2);">Skills</em></h1>
+    <p class="section-subtitle reveal" data-delay="200">From enterprise internships to open-source leadership, building real products, real pipelines, and real communities.</p>
+  </div>
+
+  <section>
+    <p class="section-tag reveal">Work History</p>
+    <h2 class="section-title reveal" data-delay="100">Professional <em>Timeline</em></h2>
+
+    <div class="timeline" style="margin-top:3rem;">
+
+      <!-- Job 1 -->
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-date">May 2024 – Oct 2024</div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-role">Technical Intern (SIWES)</div>
+              <div class="tl-company">VDL Technologies · Lagos, Nigeria</div>
+            </div>
+            <span class="tl-type tag">INTERNSHIP</span>
+          </div>
+          <p class="tl-desc">Six-month industrial attachment under the Students Industrial Work Experience Scheme (SIWES), working across software development, ML engineering, data analytics, and product QA.</p>
+          <ul class="tl-achievements">
+              <li>Developed and integrated APIs improving system integration across business applications</li>
+              <li>Trained and fine-tuned ML models that powered 1 production business chatbot</li>
+              <li>Identified and documented 30+ bugs as product tester, enhancing product reliability</li>
+              <li>Built a backend pipeline for data analytics service processing 190,000+ records in real-time</li>
+              <li>Contributed to cross-departmental projects, improving product deployment turnaround by 25%</li>
+            </ul>
+          <div class="tl-tags"><span class="tag">Python</span><span class="tag">ML Fine-tuning</span><span class="tag">APIs</span><span class="tag">Data Pipelines</span><span class="tag">QA Testing</span></div>
+        </div>
+      </div>
+
+      <!-- Job 2 -->
+      <div class="tl-item reveal" data-delay="100">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Apr 2022 – Oct 2022</div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-role">Data Onboarding & Software Management Intern</div>
+              <div class="tl-company">5TS Feelsafe Children School · Ogun, Nigeria</div>
+            </div>
+            <span class="tl-type tag-blue tag">INTERNSHIP</span>
+          </div>
+          <p class="tl-desc">Managed the digital transformation of school administrative operations, onboarding staff and students onto the SAFSIMS platform and driving high technology adoption.</p>
+          <ul class="tl-achievements">
+              <li>Onboarded and digitised records of 70+ staff and students onto the SAFSIMS platform</li>
+              <li>Integrated and maintained the online fee payment feature, processing transactions for 100+ parents</li>
+              <li>Delivered hands-on training to 10+ staff, increasing platform adoption rate by 80%</li>
+              <li>Resolved 15+ technical issues during integration, ensuring uninterrupted school administration</li>
+            </ul>
+          <div class="tl-tags"><span class="tag">SAFSIMS</span><span class="tag">Data Onboarding</span><span class="tag">Technical Training</span><span class="tag">Data Cleaning</span></div>
+        </div>
+      </div>
+
+      <!-- Job 3 -->
+      <div class="tl-item reveal" data-delay="200">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Nov 2023 – Dec 2023</div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-role">Data Science & ML Practitioner (SWEP)</div>
+              <div class="tl-company">Department of Computer Engineering, OOU</div>
+            </div>
+            <span class="tl-type tag-blue tag">ACADEMIC</span>
+          </div>
+          <p class="tl-desc">Student Work Experience Program (SWEP) focused on applied Data Science and Machine Learning — predictive modelling on real housing datasets.</p>
+          <ul class="tl-achievements">
+              <li>Applied 3 ML models (Linear Regression, Random Forest, Decision Tree) to forecast house prices from large dataset</li>
+              <li>Analysed model results to identify patterns and optimize predictive accuracy above 70%</li>
+              <li>Documented findings and methodologies in detailed report for future research reference</li>
+            </ul>
+          <div class="tl-tags"><span class="tag">Python</span><span class="tag">Scikit-Learn</span><span class="tag">Pandas</span><span class="tag">Predictive Modeling</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="exp-sidebar">
+      <div class="sidebar-card reveal">
+        <div class="sidebar-title">Core Tools & Software</div>
+        <div class="tool-list">
+          <span class="tag tag-cyan">Python</span><span class="tag tag-blue">C++</span><span class="tag tag-purple">Java</span>
+          <span class="tag tag-cyan">TensorFlow</span><span class="tag tag-blue">Scikit-learn</span>
+          <span class="tag tag-purple">NumPy</span><span class="tag tag-cyan">Pandas</span>
+          <span class="tag tag-blue">OpenCV</span><span class="tag tag-purple">MATLAB</span>
+          <span class="tag tag-cyan">AutoCAD</span><span class="tag tag-blue">Anaconda</span>
+          <span class="tag tag-purple">Jupyter</span><span class="tag tag-cyan">Proteus</span>
+          <span class="tag tag-blue">Cinema4D</span><span class="tag tag-purple">CorelDraw</span>
+          <span class="tag tag-cyan">MS Office</span>
+        </div>
+      </div>
+           
+    </div>
+
+    <style>
+    .exp-sidebar {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 1.75rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .sidebar-card:hover {
+      border-color: var(--border2);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .tool-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+     @media (max-width: 768px) {
+      .exp-sidebar {
+        grid-template-columns: 1fr;
+      }
+    }
+    </style>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Skills -->
+  <section>
+    <p class="section-tag reveal">Expertise</p>
+    <h2 class="section-title reveal" data-delay="100">Technical <em>Skills</em></h2>
+
+    <div class="skills-layout">
+      <div>
+        <div class="skill-group-title reveal">ML & AI</div>
+        <div class="skill-bar reveal" data-delay="50">
+          <div class="skill-bar-header"><span class="skill-name">Python & ML Libraries</span><span class="skill-pct">95%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="95"></div></div>
+        </div>
+        <div class="skill-bar reveal" data-delay="100">
+          <div class="skill-bar-header"><span class="skill-name">TensorFlow / Keras</span><span class="skill-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="85"></div></div>
+        </div>
+        <div class="skill-bar reveal" data-delay="150">
+          <div class="skill-bar-header"><span class="skill-name">Scikit-Learn& NumPy</span><span class="skill-pct">90%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="90"></div></div>
+        </div>
+        <div class="skill-bar reveal" data-delay="200">
+          <div class="skill-bar-header"><span class="skill-name">Computer Vision (CV2 / YOLO)</span><span class="skill-pct">92%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="92"></div></div>
+        </div>
+        <div class="skill-bar reveal" data-delay="250">
+          <div class="skill-bar-header"><span class="skill-name">NLP & Text Analysis</span><span class="skill-pct">88%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="88"></div></div>
+        </div>
+        <div class="skill-bar reveal" data-delay="250">
+          <div class="skill-bar-header"><span class="skill-name">Data Pre-processing</span><span class="skill-pct">88%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="88"></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="skill-group-title reveal">Engineering</div>
+        <div class="skill-bar reveal" data-delay="50">
+          <div class="skill-bar-header"><span class="skill-name">C++ / Java</span><span class="skill-pct">77%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="77"></div></div>
+        </div>
+        <div class="skill-bar reveal" data-delay="100">
+          <div class="skill-bar-header"><span class="skill-name">Embedded Systems</span><span class="skill-pct">78%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="78"></div></div>
+        </div>
+        <div class="skill-bar reveal" data-delay="150">
+          <div class="skill-bar-header"><span class="skill-name">API Development & Integration</span><span class="skill-pct">88%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="88"></div></div>
+        </div>
+        <div class="skill-bar reveal" data-delay="200">
+          <div class="skill-bar-header"><span class="skill-name">Database & SQL</span><span class="skill-pct">75%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="75"></div></div>
+        </div>
+        <div class="skill-bar reveal" data-delay="250">
+          <div class="skill-bar-header"><span class="skill-name">MATLAB / AutoCAD</span><span class="skill-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="85"></div></div>
+        </div>
+         <div class="skill-bar reveal" data-delay="250">
+          <div class="skill-bar-header"><span class="skill-name">Software Engineering</span><span class="skill-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="85"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Open Source -->
+  <section>
+    <p class="section-tag reveal">Community</p>
+    <h2 class="section-title reveal" data-delay="100">Leadership and  <em>Volunteering</em></h2>
+    <p class="section-subtitle reveal" data-delay="200">I believe in giving back to the ML community through open-source tools, volunteering, and leadership.</p>
+
+    <div class="os-grid" data-stagger>
+  <div class="os-card reveal">
+    <div class="os-card-top">
+      <span class="os-name">AI & ML Lead</span>
+      <span class="os-stars">2023–2025</span>
+    </div>
+    <span class="os-lang" style="font-weight:600; display:block; margin:4px 0 10px 0;">
+      <span class="lang-dot"></span>Google Developer Student Clubs (GDSC) — OOU
+    </span>
+    <ul class="os-list" style="list-style:none; padding:0; margin:0;">
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0.75rem; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Led 2 hands-on AI/ML workshops engaging 60+ students, boosting attendance by 40%
+      </li>
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0.75rem; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Directed a team of 8 across 3 collaborative projects (traffic sign recognition, sentiment analysis)
+      </li>
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0.75rem; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        2 open-source contributions with 150+ GitHub stars combined
+      </li>
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Mentored 20+ participants; facilitated 5 hackathon project submissions
+      </li>
+    </ul>
+  </div>
+
+  <div class="os-card reveal">
+    <div class="os-card-top">
+      <span class="os-name">Departmental Tech Lead</span>
+      <span class="os-stars">2023–2025</span>
+    </div>
+    <span class="os-lang" style="font-weight:600; display:block; margin:4px 0 10px 0;">
+      <span class="lang-dot" style="background:var(--cyan2)"></span>OOU-Tech Community
+    </span>
+    <ul class="os-list" style="list-style:none; padding:0; margin:0;">
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0.75rem; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Onboarded 120+ students into tech initiatives, increasing departmental participation by 75%
+      </li>
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0.75rem; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Coordinated 4 introductory tech bootcamps on data basics, attracting 80+ attendees
+      </li>
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0.75rem; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        35 new members joined the community's active roster from departmental outreach
+      </li>
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Spearheaded 2 cross-departmental hackathon-style challenges
+      </li>
+    </ul>
+  </div>
+
+  <div class="os-card reveal">
+    <div class="os-card-top">
+      <span class="os-name">Campus Ambassador</span>
+      <span class="os-stars">2022–2023</span>
+    </div>
+    <span class="os-lang" style="font-weight:600; display:block; margin:4px 0 10px 0;">
+      <span class="lang-dot" style="background:var(--green)"></span>Ingressive for Good (I4G)
+    </span>
+    <ul class="os-list" style="list-style:none; padding:0; margin:0;">
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0.75rem; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Organised 2 tech talks promoting emerging technologies and industry trends
+      </li>
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0.75rem; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Facilitated 2 coding workshops to enhance students' programming skills
+      </li>
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Led community outreach promoting digital literacy and technology education
+      </li>
+    </ul>
+  </div>
+
+  <div class="os-card reveal">
+    <div class="os-card-top">
+      <span class="os-name">Youth Executive</span>
+      <span class="os-stars">2021–2025</span>
+    </div>
+    <span class="os-lang" style="font-weight:600; display:block; margin:4px 0 10px 0;">
+      <span class="lang-dot"></span>Local Church
+    </span>
+    <ul class="os-list" style="list-style:none; padding:0; margin:0;">
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0.75rem; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Served in youth leadership and administrative roles for 4 years
+      </li>
+      <li style="position:relative; padding-left:1.45rem; margin-bottom:0; color:#f0f0f0bd; line-height:1.58; font-size:0.95rem;">
+        <span style="position:absolute; left:0; color:var(--cyan); font-size:1.4em; line-height:1; top:-2px;">•</span>
+        Organised youth events, coordination, and community programmes
+      </li>
+    </ul>
+  </div>
+</div>
+  </section>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">dan.py</a>
+  <p class="footer-copy">© 2026 Daniel Akinwande George</p>
+  <div class="footer-links">
+    <a href="https://github.com/danakin01" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/daniel-akinwande" target="_blank">LinkedIn</a>
+    <a href="mailto:danielakinwande00@gmail.com">Email</a>
+  </div>
+  <a href="#" class="back-to-top">↑</a>
+</footer>
+<script src="main.js"></script>
+<script>
+// Animate skill bars on scroll
+const skillBars = document.querySelectorAll('.skill-fill');
+const skillObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const w = entry.target.dataset.w;
+      entry.target.style.width = w + '%';
+      skillObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+skillBars.forEach(bar => skillObs.observe(bar));
+</script>
+</body>
+</html>

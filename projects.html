@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects - Daniel George Akinwande</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .page-hero {
+      padding: 7rem 5% 5rem;
+      background: radial-gradient(ellipse at 30% 50%, rgba(0,255,170,0.05) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero-bg {
+      position: absolute;
+      right: -5%;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18rem;
+      opacity: 0.03;
+      font-family: var(--font-serif);
+      line-height: 1;
+      pointer-events: none;
+      color: var(--cyan);
+    }
+    .page-hero h1 { font-family: var(--font-serif); font-size: clamp(3rem, 7vw, 6rem); font-weight: 400; color: var(--white); }
+    .page-hero h1 em { color: var(--cyan); font-style: italic; }
+
+    /* Filter Tabs */
+    .filter-bar {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .filter-btn {
+      padding: 0.5rem 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text2);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      cursor: none;
+      transition: all 0.3s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0,255,170,0.07);
+    }
+
+    /* Project Grid */
+    .all-projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.75rem;
+    }
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      overflow: hidden;
+      transition: transform 0.35s var(--ease), border-color 0.3s, box-shadow 0.35s;
+    }
+    .proj-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--glow2);
+    }
+    .proj-header {
+      padding: 1.5rem 1.5rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .proj-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: rgba(0,255,170,0.08);
+      border: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .proj-status {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+    }
+    .status-done { background: rgba(0,255,170,0.1); color: var(--cyan); border: 1px solid rgba(0,255,170,0.2); }
+    .status-research { background: rgba(0,229,255,0.1); color: var(--cyan2); border: 1px solid rgba(0,229,255,0.2); }
+    .status-award { background: rgba(245,158,11,0.1); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
+
+    .proj-body { padding: 0 1.5rem 1.5rem; }
+    .proj-cat {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--cyan);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .proj-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 0.75rem;
+    }
+    .proj-desc {
+      font-size: 0.85rem;
+      color: var(--text2);
+      line-height: 1.75;
+      margin-bottom: 1.2rem;
+    }
+    .proj-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.2rem;
+      padding: 1rem;
+      background: var(--bg2);
+      border-radius: var(--radius);
+    }
+    .metric { text-align: center; }
+    .metric-val {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--cyan);
+      font-weight: 500;
+    }
+    .metric-label {
+      font-size: 0.68rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+    .proj-footer {
+      display: flex;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .proj-link {
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      color: var(--text2);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.3s;
+    }
+    .proj-link:hover { color: var(--cyan); }
+
+    /* Featured Large Card */
+    .featured-card {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .featured-visual {
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      min-height: 300px;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius2) 0 0 var(--radius2);
+    }
+    .featured-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50%, rgba(0,255,170,0.1), transparent 70%);
+    }
+    .featured-visual .grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.5;
+    }
+    .featured-content {
+      padding: 2.5rem;
+    }
+    .featured-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: rgba(57,255,20,0.1);
+      border: 1px solid rgba(57,255,20,0.3);
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--green);
+      letter-spacing: 0.12em;
+      margin-bottom: 1rem;
+    }
+    .featured-title {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-visual { border-radius: var(--radius2) var(--radius2) 0 0; min-height: 200px; }
+      .all-projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="cursor"></div>
+<div class="cursor-ring"></div>
+<div class="page-transition"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">dan<span>.py</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="projects.html" class="active">Projects</a></li>
+    <li><a href="research.html">Research</a></li>
+    <li><a href="education.html">Education</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="contact.html" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav">
+  <a href="index.html">Home</a><a href="projects.html">Projects</a><a href="research.html">Research</a>
+  <a href="education.html">Education</a><a href="experience.html">Experience</a><a href="contact.html">Contact</a>
+</div>
+
+<div class="page-wrapper">
+
+  <div class="page-hero">
+    <div class="page-hero-bg">ML</div>
+    <p class="section-tag reveal">Portfolio</p>
+    <h1 class="reveal" data-delay="100">My <em>Projects</em> &<br>Builds</h1>
+    <p class="section-subtitle reveal" data-delay="200">Real-world ML applications, CV systems, and software engineering projects — all built with measurable outcomes.</p>
+  </div>
+
+  <section>
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="cv">Computer Vision</button>
+      <button class="filter-btn" data-filter="nlp">NLP</button>
+      <button class="filter-btn" data-filter="ml">Machine Learning</button>
+      <button class="filter-btn" data-filter="se">Software Engineering</button>
+      <button class="filter-btn" data-filter="embedded">Embedded</button>
+    </div>
+
+    <div class="all-projects-grid" data-stagger>
+
+      <!-- Featured -->
+      <div class="proj-card featured-card reveal tilt-card" data-category="se">
+        <div class="featured-visual">
+          <div class="grid-bg"></div>
+          🧮
+        </div>
+        <div class="featured-content">
+          <span class="featured-badge"><b>FINAL YEAR PROJECT</b></span>
+          <h2 class="featured-title">Library Resource Management System</h2>
+          <p style="color:var(--text2);font-size:0.9rem;line-height:1.8;margin-bottom:1.2rem;">
+            Designed and implemented a full-stack system to automate cataloging, borrowing, and tracking of library resources for OOU's Engineering Campus Library. Features include user management, secure authentication, and real-time reporting. Conducted stakeholder testing to ensure usability and efficiency. Currently in preparation for publication.
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.25rem;">
+            <span class="tag">Software Engineering</span><span class="tag">Database</span><span class="tag">Authentication</span><span class="tag">Real-time Reports</span>
+          </div>
+          <div style="display:flex;gap:1rem;">
+            <a href="https://github.com/Danakin01" class="btn btn-primary" style="padding:0.65rem 1.4rem;font-size:0.8rem;">GitHub</a>
+            <a href="research.html" class="btn btn-outline" style="padding:0.65rem 1.4rem;font-size:0.8rem;">Research</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drowsiness Detection -->
+      <div class="proj-card reveal tilt-card" data-category="cv">
+        <div class="proj-header">
+          <div class="proj-icon">👁️</div>
+          <span class="proj-status status-done">COMPLETE</span>
+        </div>
+        <div class="proj-body">
+          <p class="proj-cat">Computer Vision · Safety</p>
+          <h3 class="proj-title">Face Drowsiness Detection System</h3>
+          <p class="proj-desc">Real-time system using Python, OpenCV, and dlib to monitor eye closure via EAR calculation and 68-point facial landmark prediction. Triggers visual + audio alerts after 2 consecutive seconds of drowsiness.</p>
+          <div class="proj-metrics">
+            <div class="metric"><div class="metric-val">30+ FPS</div><div class="metric-label">Processing Speed</div></div>
+            <div class="metric"><div class="metric-val">68pt</div><div class="metric-label">Landmarks</div></div>
+          </div>
+          <div class="proj-tags"><span class="tag">Python</span><span class="tag">OpenCV</span><span class="tag">dlib</span><span class="tag">Real-time</span></div>
+        </div>
+        <div class="proj-footer">
+          <a href="https://github.com/Danakin01/drowsiness_detection" class="proj-link">⎈ GitHub</a>
+          <a href="https://github.com/Danakin01/drowsiness_detection" class="proj-link">Details →</a>
+        </div>
+      </div>
+
+      <!-- Sentiment Analysis -->
+      <div class="proj-card reveal tilt-card" data-category="nlp">
+        <div class="proj-header">
+          <div class="proj-icon">💬</div>
+          <span class="proj-status status-done">COMPLETE</span>
+        </div>
+        <div class="proj-body">
+          <p class="proj-cat">NLP · Sentiment Analysis</p>
+          <h3 class="proj-title">Social Media Sentiment Analysis Pipeline</h3>
+          <p class="proj-desc">NLP pipeline to analyse and classify sentiments from 10,000+ social media posts. Applied text pre-processing, TF-IDF, and ML models for business engagement insights.</p>
+          <div class="proj-metrics">
+            <div class="metric"><div class="metric-val">~82%</div><div class="metric-label">Accuracy</div></div>
+            <div class="metric"><div class="metric-val">10k+</div><div class="metric-label">Posts Analysed</div></div>
+          </div>
+          <div class="proj-tags"><span class="tag">Python</span><span class="tag">TF-IDF</span><span class="tag">Scikit-Learn</span></div>
+        </div>
+        <div class="proj-footer">
+          <a href="https://github.com/Danakin01/social-media-analysis-sentiment" class="proj-link">⎈ GitHub</a>
+          <a href="https://github.com/Danakin01/social-media-analysis-sentiment" class="proj-link">Details →</a>
+        </div>
+      </div>
+
+      <!-- Email Classifier -->
+      <div class="proj-card reveal tilt-card" data-category="nlp">
+        <div class="proj-header">
+          <div class="proj-icon">📩</div>
+          <span class="proj-status status-done">COMPLETE</span>
+        </div>
+        <div class="proj-body">
+          <p class="proj-cat">ML Classification · NLP</p>
+          <h3 class="proj-title">Email Spam Classifier</h3>
+          <p class="proj-desc">Supervised ML model classifying emails as spam or non-spam using bag-of-words and word embeddings feature extraction techniques with over 95% precision.</p>
+          <div class="proj-metrics">
+            <div class="metric"><div class="metric-val">&gt;95%</div><div class="metric-label">Precision</div></div>
+            <div class="metric"><div class="metric-val">2</div><div class="metric-label">Feature Methods</div></div>
+          </div>
+          <div class="proj-tags"><span class="tag">Python</span><span class="tag">NLP</span><span class="tag">Bag-of-Words</span></div>
+        </div>
+        <div class="proj-footer">
+          <a href="https://github.com/Danakin01/email_classifier" class="proj-link">⎈ GitHub</a>
+          <a href="https://github.com/Danakin01/email_classifier" class="proj-link">Details →</a>
+        </div>
+      </div>
+
+      <!-- Flexural Strength ML -->
+      <div class="proj-card reveal tilt-card" data-category="ml">
+        <div class="proj-header">
+          <div class="proj-icon">🏗️</div>
+          <span class="proj-status status-research">RESEARCH</span>
+        </div>
+        <div class="proj-body">
+          <p class="proj-cat">ML · Civil Engineering</p>
+          <h3 class="proj-title">ML for Flexural Strength Prediction</h3>
+          <p class="proj-desc">Independent research implementing and comparing ML models to predict flexural strength of concrete beams. Includes feature analysis and experimental validation for improved dataset accuracy. Publication in view.</p>
+          <div class="proj-metrics">
+            <div class="metric"><div class="metric-val">Multiple</div><div class="metric-label">ML Models</div></div>
+            <div class="metric"><div class="metric-val">In Prep</div><div class="metric-label">Publication</div></div>
+          </div>
+          <div class="proj-tags"><span class="tag">Python</span><span class="tag">Scikit-Learn</span><span class="tag">Feature Eng.</span></div>
+        </div>
+        <div class="proj-footer">
+          <a href="research.html" class="proj-link">Research →</a>
+        </div>
+      </div>
+
+      <!-- House Price Prediction -->
+      <div class="proj-card reveal tilt-card" data-category="ml">
+        <div class="proj-header">
+          <div class="proj-icon">🏠</div>
+          <span class="proj-status status-done">COMPLETE</span>
+        </div>
+        <div class="proj-body">
+          <p class="proj-cat">ML · Predictive Modeling</p>
+          <h3 class="proj-title">House Price Prediction (SWEP Project)</h3>
+          <p class="proj-desc">Utilised 3 ML models (Linear Regression, Random Forest, Decision Tree) to forecast house prices from a large pricing dataset. Analysed results for pattern recognition and optimized predictive accuracy above 70%.</p>
+          <div class="proj-metrics">
+            <div class="metric"><div class="metric-val">&gt;70%</div><div class="metric-label">Accuracy</div></div>
+            <div class="metric"><div class="metric-val">3</div><div class="metric-label">Models Compared</div></div>
+          </div>
+          <div class="proj-tags"><span class="tag">Python</span><span class="tag">Random Forest</span><span class="tag">Regression</span></div>
+        </div>
+        <div class="proj-footer">
+          <a href="https://github.com/Danakin01/rent-predict-lagos" class="proj-link">⎈ GitHub</a>
+        </div>
+      </div>
+
+      <!-- VDL Chatbot -->
+      <div class="proj-card reveal tilt-card" data-category="ml">
+        <div class="proj-header">
+          <div class="proj-icon">🤖</div>
+          <span class="proj-status status-done">DEPLOYED</span>
+        </div>
+        <div class="proj-body">
+          <p class="proj-cat">ML · LLM · Enterprise</p>
+          <h3 class="proj-title">Database Chatbot (VDL Technologies)</h3>
+          <p class="proj-desc">Trained and fine-tuned ML models powering 1 production business chatbot at VDL Technologies. Developed and integrated APIs improving system integration across business applications.</p>
+          <div class="proj-metrics">
+            <div class="metric"><div class="metric-val">1</div><div class="metric-label">Live Chatbot</div></div>
+            <div class="metric"><div class="metric-val">190k+</div><div class="metric-label">Records Processed</div></div>
+          </div>
+          <div class="proj-tags"><span class="tag">Python</span><span class="tag">ML Fine-tuning</span><span class="tag">APIs</span></div>
+        </div>
+        <div class="proj-footer">
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text3)">Proprietary · VDL Technologies</span>
+        </div>
+      </div>
+
+      <!-- Automatic Door Lock -->
+      <div class="proj-card reveal tilt-card" data-category="embedded">
+        <div class="proj-header">
+          <div class="proj-icon">🔐</div>
+          <span class="proj-status status-award">AWARD-WINNING</span>
+        </div>
+        <div class="proj-body">
+          <p class="proj-cat">Embedded Systems · Hardware</p>
+          <h3 class="proj-title">Automatic Door Lock with Passkey Encryption</h3>
+          <p class="proj-desc">Led a team of 4 to develop an automatic door lock with passkey encryption in 1 month — recognised as one of the top projects in the department. Integrated 10+ hardware components ensuring reliability.</p>
+          <div class="proj-metrics">
+            <div class="metric"><div class="metric-val">10+</div><div class="metric-label">Components</div></div>
+            <div class="metric"><div class="metric-val">Top 3</div><div class="metric-label">Department Rank</div></div>
+          </div>
+          <div class="proj-tags"><span class="tag">Embedded C</span><span class="tag">Hardware</span><span class="tag">Team Lead</span></div>
+        </div>
+        <div class="proj-footer">
+          <a href="education.html" class="proj-link">Awards →</a>
+        </div>
+      </div>
+
+      <!-- Traffic Sign Recognition -->
+      <div class="proj-card reveal tilt-card" data-category="cv">
+        <div class="proj-header">
+          <div class="proj-icon">🚦</div>
+          <span class="proj-status status-done">OPEN SOURCE</span>
+        </div>
+        <div class="proj-body">
+          <p class="proj-cat">Computer Vision · GDSC Project</p>
+          <h3 class="proj-title">Traffic Sign Recognition Model</h3>
+          <p class="proj-desc">Directed a team of 8 at GDSC OOU to build a traffic sign recognition model. Open-source contribution that garnered 150+ GitHub stars as part of 3 collaborative projects under AI/ML club leadership.</p>
+          <div class="proj-metrics">
+            <div class="metric"><div class="metric-val">150+</div><div class="metric-label">GitHub Stars</div></div>
+            <div class="metric"><div class="metric-val">8</div><div class="metric-label">Team Members</div></div>
+          </div>
+          <div class="proj-tags"><span class="tag">Python</span><span class="tag">CV</span><span class="tag">Open Source</span></div>
+        </div>
+        <div class="proj-footer">
+          <a href="#" class="proj-link">⎈ GitHub</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">dan.py</a>
+  <p class="footer-copy">© 2026 Daniel George Akinwande</p>
+  <div class="footer-links">
+    <a href="https://github.com/Danakin01" target="_blank">GitHub</a>
+    <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+    <a href="mailto:danielakinwande00@gmail.com">Email</a>
+  </div>
+  <a href="#" class="back-to-top">↑</a>
+</footer>
+
+<script src="main.js"></script>
+<script>
+// Filter functionality (adapted from your first page for perfect multi-category support + second page smoothness)
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+
+    document.querySelectorAll('.proj-card').forEach(card => {
+      const cat = card.dataset.category || '';
+      const match = f === 'all' || cat === f;
+      card.style.transition = 'opacity 0.35s, transform 0.35s';
+      if (match) {
+        card.style.display = '';
+        setTimeout(() => { card.style.opacity = '1'; }, 10);
+      } else {
+        card.style.opacity = '0.25';
+        setTimeout(() => {
+          if (card.style.opacity === '0.25') card.style.display = 'none';
+        }, 350);
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

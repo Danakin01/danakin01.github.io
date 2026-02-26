@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research - Daniel Akinwande George</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .page-hero {
+      padding: 7rem 5% 5rem;
+      background: radial-gradient(ellipse at 70% 30%, rgba(0,229,255,0.05) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .page-hero-bg {
+      position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+      font-size: 18rem; opacity: 0.03; font-family: var(--font-serif); color: var(--cyan2);
+      pointer-events: none;
+    }
+
+    /* Research Layout */
+    .research-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 4rem;
+      align-items: start;
+    }
+    .research-main {}
+    .research-sidebar {
+      position: sticky;
+      top: 100px;
+    }
+
+    /* Publication Card */
+    .pub-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      background: var(--surface);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+    .pub-card:hover {
+      border-color: var(--border2);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,255,170,0.05);
+    }
+    .pub-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--gradient);
+      border-radius: 3px 0 0 3px;
+      transform: scaleY(0);
+      transition: transform 0.4s var(--ease);
+    }
+    .pub-card:hover::before { transform: scaleY(1); }
+
+    .pub-year {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .pub-venue {
+      padding: 0.2rem 0.7rem;
+      background: rgba(0,255,170,0.08);
+      border: 1px solid rgba(0,255,170,0.15);
+      border-radius: 999px;
+      font-size: 0.65rem;
+    }
+    .pub-title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.35;
+      margin-bottom: 0.6rem;
+    }
+    .pub-authors {
+      font-size: 0.82rem;
+      color: var(--text3);
+      margin-bottom: 0.75rem;
+    }
+    .pub-authors strong { color: var(--cyan); }
+    .pub-abstract {
+      font-size: 0.875rem;
+      color: var(--text2);
+      line-height: 1.8;
+      margin-bottom: 1.2rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .pub-abstract.expanded { -webkit-line-clamp: unset; overflow: visible; }
+    .pub-links { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+    .pub-link {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text2);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.3s;
+    }
+    .pub-link:hover { color: var(--cyan); }
+    .pub-expand {
+      background: none;
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text3);
+      cursor: none;
+      transition: color 0.3s;
+      margin-left: auto;
+    }
+    .pub-expand:hover { color: var(--cyan); }
+
+    /* Sidebar */
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .sidebar-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .interest-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text2);
+    }
+    .interest-item:last-child { border-bottom: none; }
+    .interest-icon { font-size: 1.1rem; }
+    .collab-item {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+    }
+    .collab-item:last-child { border-bottom: none; }
+    .collab-name { color: var(--white); font-weight: 600; }
+    .collab-inst { color: var(--text3); font-size: 0.75rem; }
+
+    /* Stats Row */
+    .research-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .r-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .r-stat-num {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      color: var(--cyan);
+      font-weight: 500;
+    }
+    .r-stat-label { font-size: 0.72rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    @media (max-width: 1000px) {
+      .research-layout { grid-template-columns: 1fr; }
+      .research-sidebar { position: static; }
+      .research-stats { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+<div class="cursor"></div>
+<div class="cursor-ring"></div>
+<div class="page-transition"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">dan<span>.py</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="research.html" class="active">Research</a></li>
+    <li><a href="education.html">Education</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="contact.html" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav">
+  <a href="index.html">Home</a><a href="projects.html">Projects</a><a href="research.html">Research</a>
+  <a href="education.html">Education</a><a href="experience.html">Experience</a><a href="contact.html">Contact</a>
+</div>
+
+<div class="page-wrapper">
+
+  <div class="page-hero">
+    <div class="page-hero-bg">∂²</div>
+    <p class="section-tag reveal">Academic Work</p>
+    <h1 class="reveal" data-delay="100" style="font-family:var(--font-serif);font-size:clamp(3rem,7vw,6rem);font-weight:400;color:var(--white);">Research &<br><em style="color:var(--cyan2);">Publications</em></h1>
+    <p class="section-subtitle reveal" data-delay="200">Advancing applied machine learning through rigorous empirical research, from structural engineering prediction to NLP for real-world applications.</p>
+  </div>
+
+  <section>
+    <!-- Stats -->
+    <div class="research-stats" data-stagger>
+      <div class="r-stat reveal">
+        <div class="r-stat-num" data-count="2" data-suffix="">0</div>
+        <div class="r-stat-label">Publications</div>
+      </div>
+      <div class="r-stat reveal">
+        <div class="r-stat-num" data-count="2" data-suffix="">0</div>
+        <div class="r-stat-label">In Preparation</div>
+      </div>
+      <div class="r-stat reveal">
+        <div class="r-stat-num" data-count="2" data-suffix="">0</div>
+        <div class="r-stat-label">research areas</div>
+      </div>
+      <div class="r-stat reveal">
+        <div class="r-stat-num" data-count="2025" data-suffix="">0</div>
+        <div class="r-stat-label">Active year</div>
+      </div>
+    </div>
+
+    <div class="research-layout">
+      <!-- Publications -->
+      <div class="research-main">
+        <p class="section-tag reveal">Publications</p>
+
+        <!-- Paper 1 -->
+        <div class="pub-card reveal" data-delay="100">
+          <div class="pub-row">
+            <span class="pub-year">2025 <span class="pub-venue">IN PREPARATION</span>
+          </div>
+          <h2 class="pub-title">Design and Development of a Library Resource Management System</h2>
+          <p class="pub-authors"><strong>Daniel George Akinwande</strong> — Final Year Project, OOU</p>
+          <p class="pub-abstract" id="abs1">This paper presents the design and implementation of a comprehensive Library Resource Management System developed for the Engineering Campus Library at Olabisi Onabanjo University. The system automates cataloging, borrowing, and tracking of library resources with a focus on user management, secure authentication, and real-time reporting capabilities. The system was developed using a structured software engineering methodology and validated with stakeholders to ensure usability, efficiency, and reliability. The system dramatically reduces manual administrative overhead, enabling librarians to manage resources more accurately and students to locate materials faster. Stakeholder testing confirmed significant improvements in operational throughput and user satisfaction compared to the prior manual system. </p>
+          <div class="pub-links">
+            <a href="fyp.pdf" class="pub-link">📄 PDF</a>
+            <a href="#" class="pub-link">💻 Code</a>
+            <a href="dataset.zip" class="pub-link">📊 Dataset</a>
+            <button class="pub-expand" onclick="toggleAbstract('abs1', this)">Read more ↓</button>
+          </div>
+        </div>
+
+        <!-- Paper 2 -->
+       <div class="pub-card reveal" data-delay="200">
+          <div class="pub-row">
+            <span class="pub-year">2025 – 2026<span class="pub-venue">ONGOING COLLABORATION</span>
+          </div>
+          <h2 class="pub-title">Machine Learning Approaches for Flexural Strength Prediction in Concrete Beams</h2>
+          <p class="pub-authors"><strong>Daniel George Akinwande</strong> — Independent Research / Ongoing Collaboration</p>
+          <p class="pub-abstract" id="abs2">
+            This study investigates the application of multiple machine learning models for predicting the flexural strength of reinforced concrete beams — a critical structural engineering parameter traditionally reliant on time-intensive physical testing. The research implements and benchmarks several supervised learning algorithms including Random Forest, Gradient Boosted Trees, and Support Vector Regression on a comprehensive dataset of concrete beam experimental results. Feature engineering techniques were applied to extract the most predictive variables, and cross-validation was used to ensure robustness and generalisation. Results indicate that ensemble tree-based models significantly outperform linear baselines, offering a viable pathway for rapid, non-destructive strength estimation in construction practice.
+          </p>
+          <div class="pub-links">
+            <a href="#" class="pub-link">📄 PDF</a>
+            <a href="https://github.com/Danakin01/FRP-strengthened-RC-beams-database-and-GUI" class="pub-link">💻 Code</a>
+            <a href="#" class="pub-link">🤗 Model</a>
+            <a href="#" class="pub-link">📊 Dataset</a>
+            <button class="pub-expand" onclick="toggleAbstract('abs2', this)">Read more ↓</button>
+          </div>
+        </div>
+
+        <!-- GDSC Contributions note -->
+        <div class="pub-card reveal" data-delay="300">
+          <div class="pub-row">
+            <span class="pub-year">2023 – 2025 <span class="pub-venue">OPEN SOURCE / GDSC</span>
+          </div>
+          <h2 class="pub-title">Open-Source AI Contributions - GDSC OOU</h2>
+          <p class="pub-authors"><strong>Daniel George Akinwande</strong> — AI/ML Lead, Google Developer Student Clubs OOU</p>
+          <p class="pub-abstract" id="abs3">
+            As AI & ML Lead at Google Developer Student Clubs (GDSC), Olabisi Onabanjo University, I directed 3 collaborative open-source projects — including a traffic sign recognition model and a sentiment analysis tool. These projects collectively achieved 150+ GitHub stars and represented genuine contributions to the broader developer and ML community. Two of these projects were submitted as open-source contributions and are maintained on GitHub. Additionally, the GDSC workshops and bootcamps I led contributed to a data science and AI educational community that now has 120+ active members from the university.
+          </p>
+          <div class="pub-links">
+            <a href="#" class="pub-link">⌥ GitHub Org</a>
+            <a href="experience.html" class="pub-link">Leadership →</a>
+            <button class="pub-expand" onclick="toggleAbstract('abs3', this)">Read more ↓</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sidebar -->
+      <div class="research-sidebar">
+        <div class="sidebar-card reveal">
+          <div class="sidebar-title">Research Interests</div>
+          <div class="interest-item"><span class="interest-icon">🤖</span> Agentic AI Workflows</div>
+          <div class="interest-item"><span class="interest-icon">📊</span> Predictive ML Models</div>
+          <div class="interest-item"><span class="interest-icon">👁️</span> Computer Vision</div>
+          <div class="interest-item"><span class="interest-icon">💬</span> NLP & Text Classification</div>
+          <div class="interest-item"><span class="interest-icon">⚙️</span> Embedded AI Systems</div>
+          <div class="interest-item"><span class="interest-icon">🏗️</span> AI for Civil Engineering</div>
+          <div class="interest-item"><span class="interest-icon">♾️</span>Continual Learning</div>
+        </div>
+
+        <div class="sidebar-card reveal" data-delay="150">
+          <div class="sidebar-title">Collaborators</div>
+          <div class="collab-item">
+            <div class="collab-name">Dr. Ayo Oyedeji</div>
+            <div class="collab-inst">Olabisi Onabanjo University — Thesis Supervisor</div>
+          </div>
+          <div class="collab-item">
+            <div class="collab-name">Lawal Jelili</div>
+            <div class="collab-inst">Olabisi Onabanjo University, Department of Computer Engineering</div>
+          </div>
+         <div class="collab-item">
+            <div class="collab-name">Ajayi David</div>
+            <div class="collab-inst">Olabisi Onabanjo University, Department of Civil Engineering</div>
+          </div>
+        </div>
+
+        <div class="sidebar-card reveal" data-delay="300">
+          <div class="sidebar-title">Academic Profiles</div>
+          <div style="display:flex;flex-direction:column;gap:0.75rem;">
+            <a href="https://googlescholar.com" class="btn btn-outline" style="font-size:0.75rem;padding:0.55rem 1rem;justify-content:center;">Google Scholar</a>
+            <a href="https://linkedin.com/in/daniel-akinwande" class="btn btn-outline" style="font-size:0.75rem;padding:0.55rem 1rem;justify-content:center;">LinkedIn</a>
+            <a href="https://github.com/Danakin01" class="btn btn-outline" style="font-size:0.75rem;padding:0.55rem 1rem;justify-content:center;">GitHub</a>
+            <a href="https://researchgate.com" class="btn btn-outline" style="font-size:0.75rem;padding:0.55rem 1rem;justify-content:center;">ResearchGate</a>
+          </div>
+        </div>
+        <!-- Institutions -->
+      <div class="research-sidebar">
+        <div class="sidebar-card reveal">
+          <div class="sidebar-title">Institutions</div>
+          <div class="interest-item"><span class="interest-icon">🎓</span> Olabisi Onabanjo University</div>
+          <div class="interest-item"><span class="interest-icon">🌍</span>GDSC OOU Chapter</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">dan.py</a>
+  <p class="footer-copy">© 2026 Daniel Akinwande George</p>
+  <div class="footer-links">
+    <a href="https://github.com/danakin01" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/daniel-akinwande" target="_blank">LinkedIn</a>
+    <a href="mailto:danielakinwande00@gmail.com">Email</a>
+  </div>
+  <a href="#" class="back-to-top">↑</a>
+</footer>
+
+<script src="main.js"></script>
+<script>
+function toggleAbstract(id, btn) {
+  const el = document.getElementById(id);
+  el.classList.toggle('expanded');
+  btn.textContent = el.classList.contains('expanded') ? 'Show less ↑' : 'Read more ↓';
+}
+</script>
+</body>
+</html>

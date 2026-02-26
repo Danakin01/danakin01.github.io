@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Education - Daniel Akinwande George</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .page-hero {
+      padding: 7rem 5% 5rem;
+      background: radial-gradient(ellipse at 20% 80%, rgba(57,255,20,0.04) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    /* Main Degree Card */
+    .degree-card {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 24px;
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+    .degree-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--gradient);
+    }
+    .degree-card-bg {
+      position: absolute;
+      right: 3rem; top: 50%;
+      transform: translateY(-50%);
+      font-size: 12rem;
+      opacity: 0.04;
+      font-family: var(--font-serif);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .degree-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .degree-seal {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(0,255,170,0.08);
+      border: 2px solid var(--border2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      flex-shrink: 0;
+    }
+    .degree-info h2 {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .degree-info p { color: var(--text2); margin-bottom: 0.3rem; }
+    .degree-meta {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+    .degree-grade {
+      background: rgba(57,255,20,0.1);
+      border: 1px solid rgba(57,255,20,0.25);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--green);
+      font-weight: 600;
+    }
+    .degree-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .deg-stat {}
+    .deg-stat-val {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      color: var(--cyan);
+    }
+    .deg-stat-label { font-size: 0.78rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* Coursework */
+    .coursework-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .course-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.2rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color 0.3s;
+    }
+    .course-item:hover { border-color: var(--border2); }
+    .course-name { font-size: 0.85rem; color: var(--text); }
+    .course-grade {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    /* Awards Timeline */
+    .awards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    .award-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
+    }
+    .award-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--border2);
+      box-shadow: var(--glow2);
+    }
+    .award-emoji {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .award-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+    .award-body { font-size: 0.82rem; color: var(--text2); line-height: 1.7; }
+    .award-year {
+      position: absolute;
+      top: 1.25rem; right: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text3);
+    }
+
+    /* Certifications */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .cert-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: border-color 0.3s;
+    }
+    .cert-card:hover { border-color: var(--border2); }
+    .cert-logo {
+      width: 44px; height: 44px;
+      border-radius: 8px;
+      background: rgba(0,255,170,0.06);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .cert-info {}
+    .cert-name { font-size: 0.87rem; font-weight: 600; color: var(--white); margin-bottom: 0.2rem; }
+    .cert-issuer { font-size: 0.75rem; color: var(--text3); font-family: var(--font-mono); }
+
+    @media (max-width: 900px) {
+      .degree-stats { grid-template-columns: repeat(2,1fr); }
+      .coursework-grid { grid-template-columns: 1fr; }
+      .awards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="cursor"></div>
+<div class="cursor-ring"></div>
+<div class="page-transition"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">dan<span>.py</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="research.html">Research</a></li>
+    <li><a href="education.html" class="active">Education</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="contact.html" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav">
+  <a href="index.html">Home</a><a href="projects.html">Projects</a><a href="research.html">Research</a>
+  <a href="education.html">Education</a><a href="experience.html">Experience</a><a href="contact.html">Contact</a>
+</div>
+
+<div class="page-wrapper">
+  <div class="page-hero">
+    <p class="section-tag reveal">Academic Background</p>
+    <h1 class="reveal" data-delay="100" style="font-family:var(--font-serif);font-size:clamp(3rem,7vw,6rem);font-weight:400;color:var(--white);">Education &<br><em style="color:var(--green);">Awards</em></h1>
+    <p class="section-subtitle reveal" data-delay="200">Built on five years of rigorous Computer Engineering study at Olabisi Onabanjo University, culminating in First Class Honours and the Best Graduating Student award.</p>
+  </div>
+
+  <section>
+    <!-- Degree -->
+    <div class="degree-card reveal">
+      <div class="degree-card-bg">B.Eng</div>
+      <div class="degree-header">
+        <div class="degree-seal"><img src="oou.jpeg" alt="Face Drowsiness Detection" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);" /></div>
+        <div class="degree-info">
+          <h2>Bachelor of Engineering, Computer Engineering</h2>
+          <p style="font-size:1rem;color:var(--white);">Olabisi Onabanjo University, Ago-Iwoye, Ogun State, Nigeria</p>
+          <p>Department of Computer Engineering</p>
+          <div class="degree-meta">
+            <span class="degree-grade"> First Class Honours</span>
+            <span class="tag">CGPA: 4.57/5.00</span>
+            <span class="tag-blue tag">2021 – 2025</span>
+            <span class="tag">Departmental Best Graduating Student</span>
+          </div>
+        </div>
+      </div>
+      <div class="degree-stats">
+        <div class="deg-stat">
+          <div class="deg-stat-val" data-count="945" data-suffix="/1035">0</div>
+          <div class="deg-stat-label">total Grade Points</div>
+        </div>
+        <div class="deg-stat">
+          <div class="deg-stat-val" data-count="1" data-suffix="st">0</div>
+          <div class="deg-stat-label">Class Rank</div>
+        </div>
+        <div class="deg-stat">
+          <div class="deg-stat-val" data-count="5" data-suffix=" yrs">0</div>
+          <div class="deg-stat-label">Duration</div>
+        </div>
+        <div class="deg-stat">
+          <div class="deg-stat-val" data-count="3" data-suffix="">0</div>
+          <div class="deg-stat-label">Distinctions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Coursework -->
+    <p class="section-tag reveal">Academic Record</p>
+    <h2 class="section-title reveal" data-delay="100">Key <em>Coursework</em></h2>
+    <div class="coursework-grid" data-stagger>
+      <div class="course-item reveal"><span class="course-name">Artificial Intelligence</span><span class="course-grade">A</span></div>
+      <div class="course-item reveal"><span class="course-name">Machine Learning & Predictive Modeling</span><span class="course-grade">A</span></div>
+      <div class="course-item reveal"><span class="course-name">Operating Systems</span><span class="course-grade">A</span></div>
+      <div class="course-item reveal"><span class="course-name">Software Engineering</span><span class="course-grade">A</span></div>
+      <div class="course-item reveal"><span class="course-name">Embedded Systems</span><span class="course-grade">A</span></div>
+      <div class="course-item reveal"><span class="course-name">Assembly Language Programming</span><span class="course-grade">C</span></div>
+      <div class="course-item reveal"><span class="course-name">Data Structures & Algorithms</span><span class="course-grade">A</span></div>
+      <div class="course-item reveal"><span class="course-name">Computer Networks</span><span class="course-grade">A</span></div>
+      <div class="course-item reveal"><span class="course-name">Digital Signal Processing</span><span class="course-grade">A</span></div>
+      <div class="course-item reveal"><span class="course-name">Database Systems</span><span class="course-grade">A</span></div>
+      <div class="course-item reveal"><span class="course-name">Final Year Project (Thesis)</span><span class="course-grade">A</span></div>
+      <div class="course-item reveal"><span class="course-name">Computer Architecture</span><span class="course-grade">A</span></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Awards -->
+  <section>
+    <p class="section-tag reveal">Recognition</p>
+    <h2 class="section-title reveal" data-delay="100">Honours &<br><em>Achievements</em></h2>
+
+    <div class="awards-grid" data-stagger>
+      <div class="award-card reveal">
+        <span class="award-emoji">🏆</span>
+        <div class="award-year">2025</div>
+        <h3 class="award-title">Best Graduating Student</h3>
+        <p class="award-body">Awarded Best Graduating Student in the Department of Computer Engineering, OOU - the top academic distinction in the graduating cohort of 2025.</p>
+      </div>
+      <div class="award-card reveal">
+        <span class="award-emoji">🎖️</span>
+        <div class="award-year">2022/2023</div>
+        <h3 class="award-title">Outstanding Scholar Award</h3>
+        <p class="award-body">Received the Outstanding Scholar Award for the 2022/2023 academic year in recognition of exceptional academic performance and contribution to the department.</p>
+      </div>
+      <div class="award-card reveal">
+        <span class="award-emoji">🥇</span>
+        <div class="award-year">2024</div>
+        <h3 class="award-title">Top Department Project: Door Lock System</h3>
+        <p class="award-body">Led a team of 4 to develop an Automatic Door Lock with Passkey Encryption, recognised as one of the top projects in the Department of Computer Engineering for Computer Programming Lab III.</p>
+      </div>
+      <div class="award-card reveal">
+        <span class="award-emoji">🌟</span>
+        <div class="award-year">2023–2025</div>
+        <h3 class="award-title">AI & ML Lead: GDSC OOU</h3>
+        <p class="award-body">Elected and appointed as AI & ML Lead for Google Developer Student Clubs at OOU — leading 2 workshops, directing 8-person teams, and delivering 5 hackathon project submissions.</p>
+      </div>
+      <div class="award-card reveal">
+        <span class="award-emoji">🔬</span>
+        <div class="award-year">2023–2025</div>
+        <h3 class="award-title">Departmental Tech Lead</h3>
+        <p class="award-body">Served as Departmental Tech Lead at OOU-Tech Community, onboarding 120+ students into tech initiatives and increasing departmental participation in community events by 75%.</p>
+      </div>
+      <div class="award-card reveal">
+        <span class="award-emoji">🌍</span>
+        <div class="award-year">2022–2023</div>
+        <h3 class="award-title">Campus Ambassador — Ingressive for Good</h3>
+        <p class="award-body">Served as Campus Ambassador for Ingressive for Good (I4G), organising tech talks, coding workshops, and digital literacy outreach to expand access to technology education on campus.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Memberships -->
+  <section>
+    <p class="section-tag reveal">Memberships</p>
+    <h2 class="section-title reveal" data-delay="100">Professional <em>Associations</em></h2>
+
+    <div class="certs-grid" data-stagger>
+      <div class="cert-card reveal">
+        <div class="cert-logo"><img src="nuesa.jpg" alt="NUESA" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);" /></div>
+        <div class="cert-info">
+          <div class="cert-name">Nigerian Universities Engineering Students Association</div>
+          <div class="cert-issuer">NUESA</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-logo"><img src="coesa.jpg" alt="COESA" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);" /></div>
+        <div class="cert-info">
+          <div class="cert-name">Computer Engineering Students Association</div>
+          <div class="cert-issuer">COESA</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-logo"><img src="nipes.jpeg" alt="NIPES" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);" /></div>
+        <div class="cert-info">
+          <div class="cert-name">National Institute of Professional Engineers and Scientists</div>
+          <div class="cert-issuer">NIPES — Student Member</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-logo"><img src="gdsc.png" alt="GDSC" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);" /></div>
+        <div class="cert-info">
+          <div class="cert-name">Google Developer Student Clubs</div>
+          <div class="cert-issuer">GDSC OOU — AI/ML Lead</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Certifications -->
+  <section>
+    <p class="section-tag reveal">Continuing Education</p>
+    <h2 class="section-title reveal" data-delay="100">Professional <em>Certifications</em></h2>
+
+    <div class="certs-grid" data-stagger>
+      <div class="cert-card reveal">
+        <div class="cert-logo">🐍</div>
+        <div class="cert-info">
+          <div class="cert-name">Introduction to Python for Data Science</div>
+          <div class="cert-issuer">PYTHON · Certificate</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-logo">🔬</div>
+        <div class="cert-info">
+          <div class="cert-name">Google Research - TRAIL Certificate</div>
+          <div class="cert-issuer">Google Research</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-logo">📊</div>
+        <div class="cert-info">
+          <div class="cert-name">Data Science & Data Analytics Workshop</div>
+          <div class="cert-issuer">OOU Tech Community</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-logo">🏛️</div>
+        <div class="cert-info">
+          <div class="cert-name">Student Member - NIPES</div>
+          <div class="cert-issuer">National Institute of Professional Engineers & Scientists</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">dan.py</a>
+  <p class="footer-copy">© 2026 Daniel Akinwande George</p>
+  <div class="footer-links">
+    <a href="https://github.com/danakin01" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/daniel-akinwande" target="_blank">LinkedIn</a>
+    <a href="mailto:danielakinwande00@gmail.com">Email</a>
+  </div>
+  <a href="#" class="back-to-top">↑</a>
+</footer>
+<script src="main.js"></script>
+</body>
+</html>
