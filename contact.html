@@ -234,11 +234,11 @@
       .form-row { grid-template-columns: 1fr; }
     }
   </style>
-  <script src="email.min.js"></script>
-<script>
+ <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
   (function() {
     emailjs.init({
-      publicKey: "_ud2GpKJW1XBZbaQC"   // ← Your real key here, with quotes!
+      publicKey: "_ud2GpKJW1XBZbaQC"  // ← This is your real key — keep the quotes!
     });
   })();
 </script>
@@ -346,8 +346,7 @@
       </div>
 
       <!-- Right: Form -->
-      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<div class="contact-form-wrap reveal" data-delay="200">
+    <div class="contact-form-wrap reveal" data-delay="200">
   <h2 class="form-title">Send a Message</h2>
   <p class="form-sub">Fill out the form and I'll get back to you as soon as possible.</p>
 
@@ -379,7 +378,7 @@
     </div>
     <div class="form-group">
       <label class="form-label" for="message">Message</label>
-      <textarea id="message" name="message" class="form-textarea" required></textarea>
+      <textarea id="message" name="message" class="form-textarea" required placeholder="Tell me about your project..."></textarea>
     </div>
 
     <button type="button" class="submit-btn" onclick="submitForm()">
@@ -391,11 +390,22 @@
     <div class="check">↗</div>
     <h3>Message Sent!</h3>
     <p>Thanks for reaching out, Daniel will be in touch within 24 hours.</p>
-    <button onclick="resetForm()" class="submit-btn" style="margin-top: 20px; width: auto;">
-      Send Another Message ↗
+    <button onclick="resetForm()" class="submit-btn" style="margin-top: 20px; width: auto; padding: 12px 24px;">
+      Send Another ↗
     </button>
   </div>
 </div>
+
+<!-- Add this reset function too -->
+<script>
+  function resetForm() {
+    const form = document.getElementById('contact-form');
+    const successDiv = document.getElementById('form-success');
+    form.reset();
+    form.style.display = 'block';
+    successDiv.style.display = 'none';
+  }
+</script>
   </section>
 
   <!-- Resume CTA -->
