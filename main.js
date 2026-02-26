@@ -143,7 +143,7 @@ function submitForm() {
   button.disabled = true;
   button.innerHTML = 'Sending... ↗';
 
-  emailjs.sendForm('myportfolio', 'template_cpwytsw', form)
+  emailjs.sendForm('service_883k08l', 'template_cpwytsw', form)
     .then(() => {
       form.style.display = 'none';
       successDiv.style.display = 'block';
