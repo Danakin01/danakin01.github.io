@@ -234,6 +234,12 @@
       .form-row { grid-template-columns: 1fr; }
     }
   </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function() {
+    emailjs.init({ publicKey: "_ud2GpKJW1XBZbaQC" });
+  })();
+</script>
 </head>
 <body>
 <div class="cursor"></div>
@@ -339,11 +345,6 @@
 
       <!-- Right: Form -->
       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>
-  (function() {
-    emailjs.init({ publicKey: "_ud2GpKJW1XBZbaQC" });
-  })();
-</script>
 <div class="contact-form-wrap reveal" data-delay="200">
   <h2 class="form-title">Send a Message</h2>
   <p class="form-sub">Fill out the form and I'll get back to you as soon as possible.</p>
@@ -352,16 +353,16 @@
     <div class="form-row">
       <div class="form-group">
         <label class="form-label" for="fname">First Name</label>
-        <input type="text" id="fname" name="fname" class="form-input" placeholder="" required />
+        <input type="text" id="fname" name="fname" class="form-input" required />
       </div>
       <div class="form-group">
         <label class="form-label" for="lname">Last Name</label>
-        <input type="text" id="lname" name="lname" class="form-input" placeholder="" required />
+        <input type="text" id="lname" name="lname" class="form-input" required />
       </div>
     </div>
     <div class="form-group">
       <label class="form-label" for="email">Email Address</label>
-      <input type="email" id="email" name="email" class="form-input" placeholder="" required />
+      <input type="email" id="email" name="email" class="form-input" required />
     </div>
     <div class="form-group">
       <label class="form-label" for="reason">Reason for Reaching Out</label>
@@ -376,13 +377,8 @@
     </div>
     <div class="form-group">
       <label class="form-label" for="message">Message</label>
-      <textarea id="message" name="message" class="form-textarea" placeholder="Tell me about your project, opportunity, or what's on your mind..." required></textarea>
+      <textarea id="message" name="message" class="form-textarea" required></textarea>
     </div>
-
-    <!-- Hidden fields for nice email formatting -->
-    <input type="hidden" name="_subject" value="New Contact Form Message from {{fname}} {{lname}}">
-    <input type="hidden" name="_template" value="table">
-    <input type="hidden" name="_captcha" value="false"> <!-- optional: remove if you want captcha -->
 
     <button type="button" class="submit-btn" onclick="submitForm()">
       Send Message ↗
@@ -394,8 +390,8 @@
     <h3>Message Sent!</h3>
     <p>Thanks for reaching out, Daniel will be in touch within 24 hours.</p>
     <button onclick="resetForm()" class="submit-btn" style="margin-top: 20px; width: auto;">
-  Send Another Message ↗
-</button>
+      Send Another Message ↗
+    </button>
   </div>
 </div>
   </section>
@@ -442,6 +438,39 @@ function submitForm() {
     success.classList.add('show');
     success.style.animation = 'fadeUp 0.6s var(--ease) forwards';
   }, 400);
+}
+</script>
+  <script>
+function submitForm() {
+  const form = document.getElementById('contact-form');
+  const successDiv = document.getElementById('form-success');
+  const button = form.querySelector('.submit-btn');
+  const originalText = button.innerHTML;
+
+  button.disabled = true;
+  button.innerHTML = 'Sending...';
+
+  emailjs.sendForm('myportfolio', 'template_cpwytsw', form)
+    .then(() => {
+      form.style.display = 'none';
+      successDiv.style.display = 'block';
+    })
+    .catch((error) => {
+      alert('Error sending message. Please try again.');
+      console.error(error);
+    })
+    .finally(() => {
+      button.disabled = false;
+      button.innerHTML = originalText;
+    });
+}
+
+function resetForm() {
+  const form = document.getElementById('contact-form');
+  const successDiv = document.getElementById('form-success');
+  form.reset();
+  form.style.display = 'block';
+  successDiv.style.display = 'none';
 }
 </script>
 </body>
