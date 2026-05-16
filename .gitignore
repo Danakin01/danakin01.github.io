@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# API keys — NEVER commit
+config.js
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+
+# Python patch scripts
+patch_*.py
+update_*.py

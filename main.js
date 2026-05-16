@@ -1,166 +1,195 @@
-/* ═══════════════════════════════════════════════
-   SHARED JS — DANIEL AKINWANDE GEORGE PORTFOLIO
-═══════════════════════════════════════════════ */
+// ─── Theme ───
+const toggle = document.getElementById('themeToggle');
+const html = document.documentElement;
 
-document.addEventListener('DOMContentLoaded', () => {
+function setTheme(t) {
+  html.setAttribute('data-theme', t);
+  localStorage.setItem('theme', t);
+}
 
-  // ── Custom Cursor ──
-  const cursor = document.querySelector('.cursor');
-  const cursorRing = document.querySelector('.cursor-ring');
-  let mx = -100, my = -100, rx = -100, ry = -100;
+const saved = localStorage.getItem('theme');
+if (saved) setTheme(saved);
+// else default from HTML attribute
 
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-  
-  function animateCursor() {
-    rx += (mx - rx) * 0.18;
-    ry += (my - ry) * 0.18;
-    if (cursor) { cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; }
-    if (cursorRing) { cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; }
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
-
-  document.querySelectorAll('a, button, .card, [data-hover]').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor?.classList.add('hover');
-      cursorRing?.classList.add('hover');
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor?.classList.remove('hover');
-      cursorRing?.classList.remove('hover');
-    });
+if (toggle) {
+  toggle.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   });
+}
 
-  // ── Sticky Nav ──
-  const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
-    nav?.classList.toggle('scrolled', window.scrollY > 20);
-  });
+// ─── Mobile Menu ───
+const burger = document.querySelector('.hamburger');
+const mobileNav = document.querySelector('.mobile-nav');
+const mobileLinks = document.querySelectorAll('.mobile-nav a');
 
-  // ── Active Nav Link ──
-  const currentPage = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-links a, .mobile-nav a').forEach(a => {
-    const href = a.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-      a.classList.add('active');
-    }
+if (burger && mobileNav) {
+  burger.addEventListener('click', e => {
+    e.stopPropagation();
+    burger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
   });
+  mobileLinks.forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    mobileNav.classList.remove('open');
+  }));
+}
 
-  // ── Mobile Nav ──
-  const hamburger = document.querySelector('.hamburger');
-  const mobileNav = document.querySelector('.mobile-nav');
-  hamburger?.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    mobileNav?.classList.toggle('open');
-    document.body.style.overflow = mobileNav?.classList.contains('open') ? 'hidden' : '';
-  });
-  mobileNav?.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      hamburger?.classList.remove('open');
-      mobileNav?.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
-
-  // ── Scroll Reveal ──
-  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        const delay = entry.target.dataset.delay || 0;
-        setTimeout(() => entry.target.classList.add('visible'), delay);
-        revealObserver.unobserve(entry.target);
+// ─── Scroll Reveal ───
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+if (revealEls.length) {
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const delay = parseInt(e.target.dataset.delay || 0);
+        setTimeout(() => e.target.classList.add('visible'), delay);
+        revealObs.unobserve(e.target);
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => revealObs.observe(el));
+}
 
-  revealEls.forEach(el => revealObserver.observe(el));
-
-  // ── Stagger Children ──
-  document.querySelectorAll('[data-stagger]').forEach(parent => {
-    parent.querySelectorAll('.reveal').forEach((child, i) => {
-      child.dataset.delay = i * 120;
-    });
+// ─── Nav scroll style ───
+const nav = document.querySelector('nav');
+if (nav) {
+  window.addEventListener('scroll', () => {
+    nav.style.borderBottomColor = window.scrollY > 10
+      ? 'var(--c-border)' : 'transparent';
   });
+}
 
-  // ── Page Transitions ──
-  const transition = document.querySelector('.page-transition');
-  if (transition) {
-    transition.classList.add('entering');
-    document.querySelectorAll('a[href]').forEach(a => {
-      const href = a.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
-      a.addEventListener('click', e => {
-        e.preventDefault();
-        transition.classList.remove('entering');
-        transition.classList.add('leaving');
-        setTimeout(() => { window.location.href = href; }, 500);
-      });
-    });
-  }
+// ─── Chatbot ───
+const chatToggle = document.getElementById('chatbotToggleBtn');
+const chatWindow = document.getElementById('chatbotWindow');
+const chatClose = document.getElementById('chatCloseBtn');
+const chatBody = document.getElementById('chatBody');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSendBtn');
 
-  // ── Counter Animation ──
-  document.querySelectorAll('[data-count]').forEach(el => {
-    const target = parseInt(el.dataset.count);
-    const obs = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      obs.unobserve(el);
-      let start = 0, duration = 1800;
-      const step = timestamp => {
-        if (!step.start) step.start = timestamp;
-        const progress = Math.min((timestamp - step.start) / duration, 1);
-        const ease = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.floor(ease * target) + (el.dataset.suffix || '');
-        if (progress < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    }, { threshold: 0.5 });
-    obs.observe(el);
+let API_KEY = '';
+if (typeof CONFIG !== 'undefined' && CONFIG.OPENROUTER_API_KEY) {
+  API_KEY = CONFIG.OPENROUTER_API_KEY;
+}
+
+if (chatToggle) {
+  chatToggle.addEventListener('click', () => {
+    chatWindow.classList.add('open');
+    chatToggle.style.display = 'none';
   });
-
-  // ── Tilt Effect on Cards ──
-  document.querySelectorAll('.tilt-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      card.style.transform = `perspective(600px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg) translateY(-6px)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(600px) rotateX(0) rotateY(0) translateY(0)';
-    });
+}
+if (chatClose) {
+  chatClose.addEventListener('click', () => {
+    chatWindow.classList.remove('open');
+    chatToggle.style.display = 'flex';
   });
+}
 
-});
+const systemPrompt = `You are a concise, helpful assistant on Daniel Akinwande George's portfolio website.
+Answer questions about Daniel using ONLY this information:
 
-// --Submit Form--//
-function submitForm() {
-  const form = document.getElementById('contact-form');
-  const successDiv = document.getElementById('form-success');
-  const button = form.querySelector('.submit-btn');  // or document.querySelector('.submit-btn')
-  const originalText = button.innerHTML;
+BACKGROUND: First Class Computer Engineering graduate (CGPA 4.57/5.00) from Olabisi Onabanjo University, Ogun State, Nigeria. Best Graduating Student 2025.
 
-  if (!form || !successDiv) {
-    alert("Form or success div not found – check your HTML IDs.");
+EXPERIENCE:
+- Technical Intern at VDL Technologies, Lagos (May–Oct 2024): Built APIs, fine-tuned ML models for a production chatbot, QA tested 30+ bugs, built data pipeline processing 190,000+ records.
+- Data Onboarding Intern at 5TS Feelsafe Children School (Apr–Oct 2022): Digitised 70+ records, trained 10+ staff on SAFSIMS, increased adoption by 80%.
+- Data Science Practitioner (SWEP) at OOU (Nov–Dec 2023): Applied 3 ML models for house price prediction, achieved >70% accuracy.
+
+LEADERSHIP:
+- AI & ML Lead at Google Developer Student Clubs OOU (2023–2025): Led workshops for 60+ students, directed 8-person team on 3 projects, 150+ GitHub stars.
+- Departmental Tech Lead at OOU-Tech Community (2023–2025): Onboarded 120+ students, ran 4 bootcamps.
+- Campus Ambassador at Ingressive for Good (2022–2023).
+
+SKILLS: Python, TensorFlow, Keras, Scikit-Learn, OpenCV, dlib, NLP, Pandas, NumPy, FastAPI, Docker, SQL, C++, Java, MATLAB, Git.
+
+PROJECTS: Face Drowsiness Detection (OpenCV, 30+ FPS), Social Media Sentiment Pipeline (82% accuracy, 10k+ posts), Email Spam Classifier (>95% precision), Library Resource Management System (FYP), ML for Flexural Strength Prediction (ongoing research), Traffic Sign Recognition (GDSC, 150+ stars), Database Chatbot (VDL, production), Automatic Door Lock with Passkey Encryption (Top 3 dept project).
+
+RESEARCH: Library Resource Management System (FYP, in preparation for publication). ML Approaches for Flexural Strength Prediction in Concrete Beams (ongoing collaboration).
+
+Keep answers to 1-2 sentences. Be direct. If you don't have the info, say so honestly.`;
+
+let messages = [{ role: 'system', content: systemPrompt }];
+
+function addMsg(text, who) {
+  const d = document.createElement('div');
+  d.className = 'chat-msg ' + who;
+  d.textContent = text;
+  chatBody.appendChild(d);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// Typewriter effect for bot messages
+function typeMsg(text) {
+  return new Promise(resolve => {
+    const d = document.createElement('div');
+    d.className = 'chat-msg bot';
+    d.textContent = '';
+    chatBody.appendChild(d);
+    let i = 0;
+    const speed = 18; // ms per character
+    function tick() {
+      if (i < text.length) {
+        d.textContent += text[i];
+        i++;
+        chatBody.scrollTop = chatBody.scrollHeight;
+        setTimeout(tick, speed);
+      } else {
+        resolve();
+      }
+    }
+    tick();
+  });
+}
+
+async function send() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  addMsg(text, 'user');
+  chatInput.value = '';
+  messages.push({ role: 'user', content: text });
+
+  if (!API_KEY) {
+    await typeMsg('Chat is unavailable — API key not configured.');
     return;
   }
 
-  button.disabled = true;
-  button.innerHTML = 'Sending... ↗';
+  const typing = document.createElement('div');
+  typing.className = 'chat-msg bot';
+  typing.textContent = '...';
+  chatBody.appendChild(typing);
+  chatBody.scrollTop = chatBody.scrollHeight;
 
-  emailjs.sendForm('service_883k08l', 'template_cpwytsw', form)
-    .then(() => {
-      form.style.display = 'none';
-      successDiv.style.display = 'block';
-      console.log('SUCCESS! Email sent.');
-    })
-    .catch((error) => {
-      console.error('EmailJS failed:', error);
-      alert('Failed to send: ' + (error.text || 'Check console for details'));
-    })
-    .finally(() => {
-      button.disabled = false;
-      button.innerHTML = originalText;
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + API_KEY,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': window.location.origin,
+        'X-Title': 'Daniel Portfolio'
+      },
+      body: JSON.stringify({
+        model: 'meta-llama/llama-3.3-70b-instruct',
+        messages: messages
+      })
     });
+
+    const data = await res.json();
+    if (chatBody.contains(typing)) chatBody.removeChild(typing);
+
+    if (data.error) {
+      await typeMsg('Error: ' + (data.error.message || 'Something went wrong.'));
+    } else if (data.choices && data.choices.length > 0) {
+      const reply = data.choices[0].message.content;
+      await typeMsg(reply);
+      messages.push({ role: 'assistant', content: reply });
+    } else {
+      await typeMsg('No response received. Try again.');
+    }
+  } catch (err) {
+    if (chatBody.contains(typing)) chatBody.removeChild(typing);
+    await typeMsg('Connection error — check your internet.');
+  }
 }
 
+if (chatSend) chatSend.addEventListener('click', send);
+if (chatInput) chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') send(); });
