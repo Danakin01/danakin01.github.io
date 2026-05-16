@@ -165,7 +165,7 @@ async function send() {
   chatBody.scrollTop = chatBody.scrollHeight;
 
   const requestBody = JSON.stringify({
-    model: 'meta-llama/llama-4-scout:free',
+    model: 'meta-llama/llama-3.3-70b-instruct',
     messages: messages
   });
 
