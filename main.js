@@ -71,6 +71,12 @@ if (typeof CONFIG !== 'undefined' && CONFIG.OPENROUTER_API_KEY) {
   API_KEY = CONFIG.OPENROUTER_API_KEY;
 }
 
+// In production, use the Cloudflare Worker proxy (key stays server-side).
+// Locally, fall back to direct API calls using config.js.
+const PROXY_URL = (typeof CONFIG !== 'undefined' && CONFIG.PROXY_URL)
+  ? CONFIG.PROXY_URL
+  : '';
+
 if (chatToggle) {
   chatToggle.addEventListener('click', () => {
     chatWindow.classList.add('open');
@@ -147,8 +153,8 @@ async function send() {
   chatInput.value = '';
   messages.push({ role: 'user', content: text });
 
-  if (!API_KEY) {
-    await typeMsg('Chat is unavailable — API key not configured.');
+  if (!PROXY_URL && !API_KEY) {
+    await typeMsg('Chat is unavailable — API key or Proxy not configured.');
     return;
   }
 
@@ -158,20 +164,33 @@ async function send() {
   chatBody.appendChild(typing);
   chatBody.scrollTop = chatBody.scrollHeight;
 
+  const requestBody = JSON.stringify({
+    model: 'meta-llama/llama-4-scout:free',
+    messages: messages
+  });
+
   try {
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + API_KEY,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': window.location.origin,
-        'X-Title': 'Daniel Portfolio'
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/llama-3.3-70b-instruct',
-        messages: messages
-      })
-    });
+    let res;
+    if (PROXY_URL) {
+      // PRODUCTION: Use proxy — API key stays on the server
+      res = await fetch(PROXY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: requestBody
+      });
+    } else {
+      // LOCAL DEV: Direct call using config.js key
+      res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + API_KEY,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': window.location.origin,
+          'X-Title': 'Daniel Portfolio'
+        },
+        body: requestBody
+      });
+    }
 
     const data = await res.json();
     if (chatBody.contains(typing)) chatBody.removeChild(typing);
