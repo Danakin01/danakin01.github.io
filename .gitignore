@@ -2,7 +2,6 @@
 node_modules/
 
 # API keys — NEVER commit
-config.js
 .env
 
 # OS files

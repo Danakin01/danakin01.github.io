@@ -23,10 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Inject Config
-        run: |
-          echo "const CONFIG = { PROXY_URL: \"https://danakin--d1774784511f11f190efee650bb23af1.web.val.run\" };" > config.js
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
