@@ -95,7 +95,10 @@ Answer questions about Daniel using ONLY this information:
 
 BACKGROUND: First Class Computer Engineering graduate (CGPA 4.57/5.00) from Olabisi Onabanjo University, Ogun State, Nigeria. Best Graduating Student 2025.
 
+CURRENT ROLE: AI Engineer at VDL Technologies. (If anyone asks what Daniel is currently doing, tell them he is currently an AI Engineer at VDL Technologies).
+
 EXPERIENCE:
+- AI Engineer at VDL Technologies (Current): Building advanced AI solutions, fine-tuning ML models, and deploying production-grade systems.
 - Technical Intern at VDL Technologies, Lagos (May–Oct 2024): Built APIs, fine-tuned ML models for a production chatbot, QA tested 30+ bugs, built data pipeline processing 190,000+ records.
 - Data Onboarding Intern at 5TS Feelsafe Children School (Apr–Oct 2022): Digitised 70+ records, trained 10+ staff on SAFSIMS, increased adoption by 80%.
 - Data Science Practitioner (SWEP) at OOU (Nov–Dec 2023): Applied 3 ML models for house price prediction, achieved >70% accuracy.
